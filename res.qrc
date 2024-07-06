@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>png/spritesheet.png</file>
+        <file>png/backg.jpg</file>
+        <file>png/bullet.png</file>
+        <file>png/enemys.png</file>
+        <file>png/enemy2.png</file>
+        <file>png/enemybullet.png</file>
+        <file>png/HealthUI.png</file>
+        <file>png/death.png</file>
+        <file>png/gameover.png</file>
+        <file>png/endGame.png</file>
+    </qresource>
+</RCC>
