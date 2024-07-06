@@ -19,14 +19,17 @@ public:
     QGraphicsScene *scene;
     Score *score;
     Health *health;
-    Sprite *warrior;
+    Sprite *ship;
     QTimer *timer;
+    QPixmap *gameOverPic;
 
     //metodos
+    void drawPanel(int x, int y, int width, int height, QColor color, double opacity);
     void displayMainMenu();
+    void displayGameOverWindow();
 
 public slots:
-    // void start();
+    void start();
     void spawn();
     void Game_Over();
 };

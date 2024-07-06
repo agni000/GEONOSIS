@@ -9,6 +9,6 @@
         <file>png/HealthUI.png</file>
         <file>png/death.png</file>
         <file>png/gameover.png</file>
-        <file>png/endGame.png</file>
+        <file>png/endd.png</file>
     </qresource>
 </RCC>

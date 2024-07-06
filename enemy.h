@@ -24,6 +24,4 @@ public slots:
     void Refresh();
 };
 
-
-
 #endif // ENEMY_H

@@ -32,7 +32,7 @@ WeakEnemy::WeakEnemy(QGraphicsItem *parent) : QGraphicsItem(parent) {
 
 void WeakEnemy::move() {
     setPos(x()-5,y());
-    if(pos().y() > 700)
+    if(pos().x() < 25)
     {
         scene()->removeItem(this);
         delete this;

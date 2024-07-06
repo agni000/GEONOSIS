@@ -7,6 +7,7 @@ Button::Button(QString name, QGraphicsItem *parent) : QGraphicsRectItem(parent) 
     QBrush brush;
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(Qt::darkCyan);
+    setBrush(brush);
 
     text = new QGraphicsTextItem(name, this);
 
@@ -22,7 +23,7 @@ void Button::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void Button::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
-    //altareremos a cor quando o mouse passar por cima do botao
+    //alteramos a cor quando o mouse passar por cima do botao
     QBrush brush;
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(Qt::cyan);

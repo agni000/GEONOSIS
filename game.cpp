@@ -31,15 +31,47 @@ Game::Game(QWidget *parent) {
     //fixar o tamanho da janela
     setFixedSize(800,600);
 
-    warrior = new Sprite();
-    warrior->setPos(200, 410);
-    warrior->setFlag(QGraphicsItem::ItemIsFocusable);
-    warrior->setFocus();
-    warrior->setScale(1.1);
+    gameOverPic = new QPixmap(":/images/png/endd.png");
+}
+
+void Game::displayMainMenu() {
+    //titulo
+    QGraphicsTextItem *titleText = new QGraphicsTextItem(QString("Trabalho Final"));
+    QFont titleFont("Calibri", 50);
+    titleText->setFont(titleFont);
+    titleText->setDefaultTextColor(Qt::darkCyan);
+    int txPos = this->width()/2 - titleText->boundingRect().width()/2;
+    int tyPos = 150;
+    titleText->setPos(txPos, tyPos);
+    scene->addItem(titleText);
+
+    Button *playButton = new Button(QString("Jogar"));
+    int bxPos = this->width()/2 - playButton->boundingRect().width()/2;
+    int byPos = 275;
+    playButton->setPos(bxPos, byPos);
+    connect(playButton, SIGNAL(clicked()), this, SLOT(start()));
+    scene->addItem(playButton);
+
+    Button *quitButton = new Button(QString("Sair"));
+    int qxPos = this->width()/2 - quitButton->boundingRect().width()/2;
+    int qyPos = 350;
+    quitButton->setPos(qxPos, qyPos);
+    connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
+    scene->addItem(quitButton);
+}
+
+void Game::start() {
+    scene->clear();
+
+    ship = new Sprite();
+    ship->setPos(200, 410);
+    ship->setFlag(QGraphicsItem::ItemIsFocusable);
+    ship->setFocus();
+    ship->setScale(1.1);
 
     //adiciona o player no cenario
     // scene->addItem(player);
-    scene->addItem(warrior);
+    scene->addItem(ship);
 
     // criar inimigos
     timer = new QTimer();
@@ -56,32 +88,6 @@ Game::Game(QWidget *parent) {
     show();
 }
 
-void Game::displayMainMenu() {
-    //titulo
-    QGraphicsTextItem *titleText = new QGraphicsTextItem(QString("Trabalho Final"));
-    QFont titleFont("Calibri", 50);
-    titleText->setFont(titleFont);
-    int txPos = this->width()/2 - titleText->boundingRect().width()/2;
-    int tyPos = 150;
-    titleText->setPos(txPos, tyPos);
-    scene->addItem(titleText);
-
-    Button *playButton = new Button(QString("Play"));
-    int bxPos = this->width()/2 - titleText->boundingRect().width()/2;
-    int byPos = 275;
-    playButton->setPos(bxPos, byPos);
-    connect(playButton, SIGNAL(clicked()), this, SLOT(start()));
-    scene->addItem(playButton);
-
-    Button *quitButton = new Button(QString("Quit"));
-    int qxPos = this->width()/2 - titleText->boundingRect().width()/2;
-    int qyPos = 350;
-    playButton->setPos(qxPos, qyPos);
-    connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
-    scene->addItem(quitButton);
-
-}
-
 void Game::spawn() {
     // cria inimigo
     Enemy *enemy = new Enemy();
@@ -92,8 +98,42 @@ void Game::spawn() {
 
 void Game::Game_Over() {
     timer->stop();
+    for(size_t i = 0, n = scene->items().size(); i < n; i++) {
+        scene->items().at(i)->setEnabled(false);
+    }
+    ship->setScale(1.5);
+
+    displayGameOverWindow();
+}
+
+void Game::displayGameOverWindow() {
+    //painel escurecido sobre o jogo
+    drawPanel(0, 0, 800, 600, Qt::black, 0.25);
+
+    //painel de fim de jogo
+    drawPanel(200, 200, 400, 350, Qt::lightGray, 0.75);
+
+    Button *restartBtn = new Button("Jogar novamente");
+    restartBtn->setPos(300, 350);
+    scene->addItem(restartBtn);
+    connect(restartBtn, SIGNAL(clicked()), this, SLOT(start()));
+
+    Button *closeBtn = new Button("Fechar jogo");
+    closeBtn->setPos(300, 400);
+    scene->addItem(closeBtn);
+    connect(closeBtn, SIGNAL(clicked()), this, SLOT(close()));
+
     scene->addItem(score);
-    // scene->addItem(gameover);
-    warrior->setPos(400, 300);
-    warrior->setScale(1.5);
+    score->setPos(330, 250);
+}
+
+void Game::drawPanel(int x, int y, int width, int height, QColor color, double opacity) {
+    QGraphicsRectItem *panel = new QGraphicsRectItem(x, y, width, height);
+    QBrush brush;
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(color);
+    panel->setBrush(brush);
+    panel->setOpacity(opacity);
+    scene->addItem(panel);
+    scene->addPixmap(*gameOverPic);
 }

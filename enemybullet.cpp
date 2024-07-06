@@ -29,7 +29,7 @@ EnemyBullet::EnemyBullet(QGraphicsItem *parent) : QObject(), QGraphicsItem(paren
 
 void EnemyBullet::move() {
     setPos(x()-10, y());
-    if(pos().x() > 700) {
+    if(pos().x() < 50) {
         scene()->removeItem(this);
         delete this;
         qDebug()<<"Bullet removed";

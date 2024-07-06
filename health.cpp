@@ -22,7 +22,7 @@ void Health::decrease()
     m_health--;
     Refresh();
 
-    if (m_health < 0) {
+    if (m_health == -1) {
         game->Game_Over();
     }
 }

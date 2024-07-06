@@ -56,7 +56,7 @@ void Enemy::Refresh() {
     }
     this->update(-width/2, -height/2, width, height);
 
-    if (bulletFlag == 72) {
+    if (bulletFlag == 60) {
         EnemyBullet *EnmyBullet = new EnemyBullet();
         EnmyBullet->setPos(pos().x() - 45, pos().y() + 20);
         EnmyBullet->setScale(.6);

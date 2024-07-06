@@ -45,19 +45,19 @@ void Sprite::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 }
 
 void Sprite::keyPressEvent(QKeyEvent *event) {
-    float x = game->warrior->x();
-    float y = game->warrior->y();
+    float x = game->ship->x();
+    float y = game->ship->y();
     Bullet *bullet = new Bullet();
 
     switch(event->key()) {
     case Qt::Key_Right:
-        if (pos().x() >= -5) {
-            game->warrior->setPos(x + 5, y);
+        if (x < 750) {
+            game->ship->setPos(x + 5, y);
         }
         break;
     case Qt::Key_Left:
-        if (pos().x() >= -5) {
-            game->warrior->setPos(x - 5, y);
+        if (x > 5) {
+            game->ship->setPos(x - 5, y);
         }
         break;
     case Qt::Key_Space:
@@ -65,10 +65,14 @@ void Sprite::keyPressEvent(QKeyEvent *event) {
         game->scene->addItem(bullet);
         break;
     case Qt::Key_Up:
-        game->warrior->setPos(x, y - 15);
+        if (y > 20) {
+            game->ship->setPos(x, y - 15);
+        }
         break;
     case Qt::Key_Down:
-        game->warrior->setPos(x, y + 15);
+        if (y < 580) {
+            game->ship->setPos(x, y + 15);
+        }
         break;
     }
 }
@@ -94,7 +98,7 @@ void Sprite::collision() {
             scene()->removeItem(colliding_item[i]);
             delete colliding_item[i];
             qDebug() << "Colisao";
-            if (game->health->getHealth() < 0) {
+            if (game->health->getHealth() == -1) {
                 currentPixMap = deathSprite;
                 update();
             }
@@ -111,7 +115,7 @@ void Sprite::collision() {
             scene()->removeItem(colliding_weakEnemy[i]);
             delete colliding_weakEnemy[i];
             qDebug() << "Colisao";
-            if (game->health->getHealth() < 0) {
+            if (game->health->getHealth() == -1) {
                 currentPixMap = deathSprite;
                 update();
             }
@@ -128,7 +132,7 @@ void Sprite::collision() {
             scene()->removeItem(colliding_EnemyBullet[i]);
             delete colliding_EnemyBullet[i];
             qDebug() << "Colisao";
-            if (game->health->getHealth() < 0) {
+            if (game->health->getHealth() == -1) {
                 currentPixMap = deathSprite;
                 update();
             }
