@@ -1,7 +1,7 @@
 #include "button.h"
 #include "qbrush.h"
 
-Button::Button(QString name, QGraphicsItem *parent) : QGraphicsRectItem(parent) {
+Button::Button(QString name, QObject *parent) : QObject(parent) {
     //rect que serve de botao
     setRect(0, 0, 200, 50);
     QBrush brush;
@@ -16,6 +16,10 @@ Button::Button(QString name, QGraphicsItem *parent) : QGraphicsRectItem(parent) 
     text->setPos(xPos, yPos);
 
     setAcceptHoverEvents(true);
+}
+
+Button::~Button() {
+    delete text;
 }
 
 void Button::mousePressEvent(QGraphicsSceneMouseEvent *event) {

@@ -5,15 +5,15 @@ Score::Score(QGraphicsItem *parent) : QGraphicsTextItem(parent) {
     score = 0;
     setPlainText(QString("Pontuação: ") + QString::number(score));
     setDefaultTextColor(Qt::blue);
-    setFont(QFont("times", 16));
+    setFont(QFont("Calibri", 16));
 }
 
 void Score::increase()
 {
-    score++;
+    score += 35;
     setPlainText(QString("Pontuação: ") + QString::number(score));
     setDefaultTextColor(Qt::blue);
-    setFont(QFont("times", 16));
+    setFont(QFont("Calibri", 16));
 }
 
 int Score::getScore()

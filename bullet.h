@@ -17,6 +17,7 @@ protected:
     float height;
 public:
     Bullet(QGraphicsItem *parent = nullptr);
+    ~Bullet();
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 

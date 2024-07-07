@@ -6,7 +6,7 @@
 
 extern Game *game;
 
-Health::Health(QGraphicsItem *parent) : QGraphicsItem(parent) {
+Health::Health(QObject *parent) : QObject(parent) {
     m_health = 6;
     healthSprite = new QPixmap(":/images/png/HealthUI.png");
 

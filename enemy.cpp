@@ -30,9 +30,8 @@ Enemy::Enemy(QGraphicsItem *parent) : QGraphicsItem(parent) {
 
 void Enemy::move() {
     setPos(x()-5,y());
-    if(pos().x() < 0)
-    {
-        // scene()->removeItem(this);
+    if(pos().x() < 25) {
+        //scene()->removeItem(this);
         delete this;
         qDebug()<<"Enemy removed";
     }

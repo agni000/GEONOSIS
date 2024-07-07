@@ -29,6 +29,11 @@ Bullet::Bullet(QGraphicsItem *parent) : QObject(), QGraphicsItem(parent) {
     connect(timer, SIGNAL(timeout()), this, SLOT(collision()));
 }
 
+Bullet::~Bullet() {
+    // delete bulletSprite;
+    // delete timer;
+}
+
 void Bullet::move() {
     setPos(x()+10, y());
     if(pos().x() > 700) {

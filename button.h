@@ -11,7 +11,8 @@ private:
     QGraphicsTextItem *text;
 public:
     //construtor
-    Button(QString name, QGraphicsItem *parent = NULL);
+    Button(QString name, QObject *parent = nullptr);
+    ~Button();
 
     //eventos
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

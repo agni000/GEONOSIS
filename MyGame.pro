@@ -14,6 +14,7 @@ SOURCES += \
     enemy.cpp \
     enemybullet.cpp \
     game.cpp \
+    gameover.cpp \
     health.cpp \
     main.cpp \
     score.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     enemy.h \
     enemybullet.h \
     game.h \
+    gameover.h \
     health.h \
     score.h \
     sprite.h \
@@ -39,4 +41,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    music.qrc \
     res.qrc

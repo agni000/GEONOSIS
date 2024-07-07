@@ -77,17 +77,6 @@ void Sprite::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-// void Sprite::keyReleaseEvent(QKeyEvent *event) {
-//     if (event->key() == Qt::Key_Right) {
-//         currentPixMap = idle; // seta o sprite para idle quando o player solta a tecla
-//     } else if (event->key() == Qt::Key_Left) {
-//         currentPixMap = idle;
-//     } else if (event->key() == Qt::Key_Space) {
-//         currentPixMap = idle;
-//     }
-// }
-
-
 void Sprite::collision() {
     QList<QGraphicsItem*> colliding_item = collidingItems();
     for(int i = 0, n = colliding_item.size(); i < n; i++)
@@ -140,5 +129,4 @@ void Sprite::collision() {
         }
     }
 }
-
 
