@@ -16,6 +16,7 @@ protected:
     int bulletFlag;
 public:
     Enemy(QGraphicsItem *parent = nullptr);
+    ~Enemy();
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 

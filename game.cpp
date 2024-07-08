@@ -10,21 +10,20 @@
 #include "weakenemy.h"
 #include <QGraphicsItem>
 #include <QPushButton>
-#include <QtMultimedia/QtMultimedia>
 
 // extern Game *game;
 
 Game::Game(QWidget *parent) {
     //cria cenario
-    // game->setRenderHint(QPainter::Antialiasing);
     scene = new QGraphicsScene();
     music = new QMediaPlayer(this);
     audioOutput = new QAudioOutput(this);
     music->setSource(QUrl("qrc:/music/nu11 - Running Out of Time.ogg"));
     music->setAudioOutput(audioOutput);
-    audioOutput->setVolume(50);
+    audioOutput->setVolume(0.1);
     music->play();
 
+    highScore = 0;
     score = NULL;
     health = NULL;
     picture = NULL;
@@ -67,23 +66,22 @@ Game::~Game() {
 
 void Game::displayMainMenu() {
     //titulo
-    QGraphicsTextItem *titleText = scene->addText(QString("Trabalho Final"));
+    QGraphicsTextItem *titleText = scene->addText(QString("GEONOSIS"));
     QFont titleFont("Calibri", 50);
     titleText->setFont(titleFont);
     titleText->setDefaultTextColor(Qt::darkCyan);
     int txPos = this->width()/2 - titleText->boundingRect().width()/2;
     int tyPos = 150;
     titleText->setPos(txPos, tyPos);
-    scene->addItem(titleText);
 
-    playButton = new Button(QString("Jogar"), this);
+    playButton = new Button(QString("Play game"), this);
     int bxPos = this->width()/2 - playButton->boundingRect().width()/2;
     int byPos = 275;
     playButton->setPos(bxPos, byPos);
     connect(playButton, SIGNAL(clicked()), this, SLOT(start()));
     scene->addItem(playButton);
 
-    quitButton = new Button(QString("Sair"), this);
+    quitButton = new Button(QString("Quit"), this);
     int qxPos = this->width()/2 - quitButton->boundingRect().width()/2;
     int qyPos = 350;
     quitButton->setPos(qxPos, qyPos);
@@ -99,25 +97,29 @@ void Game::start() {
     if (picture) {
         delete picture;
     }
+
+    if (!music->isPlaying()) {
+        music->play();
+    }
+
     //o restante sofre delete pelo clear
     scene->clear();
 
-    ship = new Sprite(this);
+    ship = new Sprite();
     ship->setPos(200, 410);
     ship->setFlag(QGraphicsItem::ItemIsFocusable);
     ship->setFocus();
     ship->setScale(1.1);
 
-    //adiciona o player no cenario
-    // scene->addItem(player);
+    //adiciona a nave no cenario
     scene->addItem(ship);
 
-    // criar inimigos
+    // spawn de inimigos
     timer = new QTimer(this);
     timer->start(2000);
     connect(timer, &QTimer::timeout, this, &Game::spawn);
 
-    // adicionar contagem de pontos e vida do jogador
+    // score e vida
     score = new Score();
     health = new Health(this);
     health->setPos(400, 25);
@@ -128,7 +130,7 @@ void Game::start() {
 }
 
 void Game::spawn() {
-    // cria inimigo
+    // spawna os inimigos
     Enemy *enemy = new Enemy();
     WeakEnemy *enemy2 = new WeakEnemy();
     scene->addItem(enemy);
@@ -149,25 +151,37 @@ void Game::displayGameOverWindow() {
     //painel escurecido sobre o jogo
     drawPanel(0, 0, 800, 600, Qt::black, 0.25);
 
-    //painel de fim de jogo
-    drawPanel(200, 200, 400, 350, Qt::lightGray, 0.75);
+    if (highScore < score->getScore()) {
+        highScore = score->getScore();
+    }
 
-    restartBtn = new Button(QString("Jogar novamente"), this);
-    restartBtn->setPos(300, 350);
+    restartBtn = new Button(QString("Play again"), this);
+    restartBtn->setPos(300, 300);
     scene->addItem(restartBtn);
     connect(restartBtn, SIGNAL(clicked()), this, SLOT(start()));
 
-    closeBtn = new Button(QString("Fechar jogo"), this);
-    closeBtn->setPos(300, 400);
+    closeBtn = new Button(QString("Quit"), this);
+    closeBtn->setPos(300, 350);
     scene->addItem(closeBtn);
     connect(closeBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     scene->addItem(score);
-    score->setPos(320, 450);
+    score->setPos(345, 410);
     picture = new GameOver();
-    picture->setPos(400, 290);
-    picture->setScale(.3);
+    picture->setPos(400, 200);
+    picture->setScale(.4);
     scene->addItem(picture);
+
+    QString bestScore = QString("Best Score: %1").arg(highScore);
+    QGraphicsTextItem *highScoreText = scene->addText(bestScore);
+    QFont scoreFont("Calibri", 18);
+    highScoreText->setFont(scoreFont);
+    highScoreText->setDefaultTextColor(Qt::cyan);
+    int sxPos = 325;
+    int syPos = 440;
+    highScoreText->setPos(sxPos, syPos);
+
+    scene->removeItem(health);
 }
 
 void Game::drawPanel(int x, int y, int width, int height, QColor color, double opacity) {

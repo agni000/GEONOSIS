@@ -7,8 +7,6 @@
 #include "game.h"
 #include "weakenemy.h"
 
-// declaração da variavel do tipo extern
-// indica que essa variavel já foi declarada em algum outro arquivo do projeto
 extern Game *game;
 
 Bullet::Bullet(QGraphicsItem *parent) : QObject(), QGraphicsItem(parent) {
@@ -30,8 +28,8 @@ Bullet::Bullet(QGraphicsItem *parent) : QObject(), QGraphicsItem(parent) {
 }
 
 Bullet::~Bullet() {
-    // delete bulletSprite;
-    // delete timer;
+    delete bulletSprite;
+    delete timer;
 }
 
 void Bullet::move() {
@@ -64,24 +62,12 @@ void Bullet::collision() {
     QList<QGraphicsItem*> colliding_item = collidingItems();
     for(int i = 0, n = colliding_item.size(); i < n; i++)
     {
-        if(typeid(*(colliding_item[i])) == typeid(Enemy))
+        if(typeid(*(colliding_item[i])) == typeid(Enemy) || typeid(*(colliding_item[i])) == typeid(WeakEnemy))
         {
             game->score->increase();
             scene()->removeItem(colliding_item[i]);
             delete this;
             delete colliding_item[i];
-            return;
-        }
-    }
-
-    QList<QGraphicsItem*> colliding_weakEnemy = collidingItems();
-    for(int i = 0, n = colliding_weakEnemy.size(); i < n; i++)
-    {
-        if(typeid(*(colliding_weakEnemy[i])) == typeid(WeakEnemy))
-        {
-            game->score->increase();
-            scene()->removeItem(colliding_weakEnemy[i]);
-            delete colliding_weakEnemy[i];
             return;
         }
     }

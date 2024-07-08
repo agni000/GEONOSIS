@@ -15,7 +15,6 @@ Sprite::Sprite(QObject *parent) : QObject(parent) {
     deathSprite = new QPixmap(":/images/png/gameover.png");
     rows = 0;
     columns = 0;
-
     //dimensoes de cada imagem iterada
     width = 176;
     height = 96;
@@ -23,6 +22,16 @@ Sprite::Sprite(QObject *parent) : QObject(parent) {
     timer->start(50);
     connect(timer, &QTimer::timeout, this, &Sprite::Refresh);
     connect(timer, &QTimer::timeout, this, &Sprite::collision);
+}
+
+Sprite::~Sprite() {
+    if (timer) {
+        delete timer;
+    }
+
+    if (currentPixMap) {
+        delete currentPixMap;
+    }
 }
 
 void Sprite::Refresh() {
@@ -52,12 +61,12 @@ void Sprite::keyPressEvent(QKeyEvent *event) {
     switch(event->key()) {
     case Qt::Key_Right:
         if (x < 750) {
-            game->ship->setPos(x + 5, y);
+            game->ship->setPos(x + 8, y);
         }
         break;
     case Qt::Key_Left:
         if (x > 5) {
-            game->ship->setPos(x - 5, y);
+            game->ship->setPos(x - 8, y);
         }
         break;
     case Qt::Key_Space:
@@ -81,12 +90,11 @@ void Sprite::collision() {
     QList<QGraphicsItem*> colliding_item = collidingItems();
     for(int i = 0, n = colliding_item.size(); i < n; i++)
     {
-        if(typeid(*(colliding_item[i])) == typeid(Enemy))
+        if(typeid(*(colliding_item[i])) == typeid(Enemy) || typeid(*(colliding_item[i])) == typeid(EnemyBullet) || typeid(*(colliding_item[i])) == typeid(WeakEnemy))
         {
             game->health->decrease();
             scene()->removeItem(colliding_item[i]);
             delete colliding_item[i];
-            qDebug() << "Colisao";
             if (game->health->getHealth() == -1) {
                 currentPixMap = deathSprite;
                 update();
@@ -94,39 +102,13 @@ void Sprite::collision() {
             return;
         }
     }
+}
 
-    QList<QGraphicsItem*> colliding_weakEnemy = collidingItems();
-    for(int i = 0, n = colliding_weakEnemy.size(); i < n; i++)
-    {
-        if(typeid(*(colliding_weakEnemy[i])) == typeid(WeakEnemy))
-        {
-            game->health->decrease();
-            scene()->removeItem(colliding_weakEnemy[i]);
-            delete colliding_weakEnemy[i];
-            qDebug() << "Colisao";
-            if (game->health->getHealth() == -1) {
-                currentPixMap = deathSprite;
-                update();
-            }
-            return;
-        }
-    }
-
-    QList<QGraphicsItem*> colliding_EnemyBullet = collidingItems();
-    for(int i = 0, n = colliding_EnemyBullet.size(); i < n; i++)
-    {
-        if(typeid(*(colliding_EnemyBullet[i])) == typeid(EnemyBullet))
-        {
-            game->health->decrease();
-            scene()->removeItem(colliding_EnemyBullet[i]);
-            delete colliding_EnemyBullet[i];
-            qDebug() << "Colisao";
-            if (game->health->getHealth() == -1) {
-                currentPixMap = deathSprite;
-                update();
-            }
-            return;
-        }
+bool Sprite::isAlive() {
+    if (currentPixMap == deathSprite) {
+        return false;
+    } else {
+        return true;
     }
 }
 

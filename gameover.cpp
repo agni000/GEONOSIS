@@ -10,6 +10,10 @@ GameOver::GameOver(QGraphicsItem *parent): QGraphicsItem(parent)
     height = 386;
 }
 
+GameOver::~GameOver() {
+    delete gameOverPic;
+}
+
 QRectF GameOver::boundingRect() const
 {
     return QRectF(-width/2, -height/2, width, height);

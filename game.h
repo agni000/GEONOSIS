@@ -10,7 +10,8 @@
 #include "health.h"
 #include "sprite.h"
 #include <QGraphicsItem>
-#include <QtMultimedia/QtMultimedia>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 class Game : public QGraphicsView {
     Q_OBJECT
@@ -22,6 +23,7 @@ public:
     //atributos
     QGraphicsScene *scene;
     Score *score;
+    int highScore;
     Health *health;
     Sprite *ship;
     QTimer *timer;

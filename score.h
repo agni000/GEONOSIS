@@ -9,6 +9,7 @@ public:
     Score(QGraphicsItem *parent = nullptr);
     void increase();
     int getScore();
+    void setScore(int newscore) {score = newscore;}
 private:
     int score;
 };

@@ -15,6 +15,7 @@ protected:
     int m_health;
 public:
     Health(QObject *parent = nullptr);
+    ~Health();
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void decrease();

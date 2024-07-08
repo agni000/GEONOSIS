@@ -24,19 +24,33 @@ WeakEnemy::WeakEnemy(QGraphicsItem *parent) : QGraphicsItem(parent) {
     height = 125;
 
     //movimentação
-    QTimer *timer = new QTimer();
+    timer = new QTimer();
     timer->start(50);
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));
     connect(timer, SIGNAL(timeout()), this, SLOT(Refresh()));
 }
 
+WeakEnemy::~WeakEnemy() {
+    if (weakSprite) {
+        delete weakSprite;
+    }
+
+    if (timer) {
+        delete timer;
+    }
+}
+
 void WeakEnemy::move() {
     setPos(x()-5,y());
-    if(pos().x() < 25)
-    {
+
+    if (game->ship->isAlive()) {
+        if(pos().x() < 25) {
+            scene()->removeItem(this);
+            delete this;
+        }
+    } else {
         scene()->removeItem(this);
         delete this;
-        qDebug()<<"Enemy removed";
     }
 }
 

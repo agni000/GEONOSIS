@@ -10,6 +10,8 @@ class GameOver : public QObject, public QGraphicsItem
     Q_OBJECT
 public:
     GameOver(QGraphicsItem *parent = nullptr);
+    ~GameOver();
+protected:
     QPixmap *gameOverPic;
     float rows;
     float columns;

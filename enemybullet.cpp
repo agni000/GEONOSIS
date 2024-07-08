@@ -27,12 +27,16 @@ EnemyBullet::EnemyBullet(QGraphicsItem *parent) : QObject(), QGraphicsItem(paren
     connect(timer, SIGNAL(timeout()), this, SLOT(Refresh()));
 }
 
+EnemyBullet::~EnemyBullet() {
+    delete bulletSprite;
+    delete timer;
+}
+
 void EnemyBullet::move() {
     setPos(x()-10, y());
     if(pos().x() < 50) {
         scene()->removeItem(this);
         delete this;
-        qDebug()<<"Bullet removed";
     }
 }
 

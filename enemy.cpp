@@ -22,18 +22,33 @@ Enemy::Enemy(QGraphicsItem *parent) : QGraphicsItem(parent) {
     height = 160;
 
     //movimentação
-    QTimer *timer = new QTimer();
+    timer = new QTimer();
     timer->start(50);
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));
     connect(timer, SIGNAL(timeout()), this, SLOT(Refresh()));
 }
 
+Enemy::~Enemy() {
+    if (enemySprite) {
+        delete enemySprite;
+    }
+
+    if (timer) {
+        delete timer;
+    }
+}
+
 void Enemy::move() {
     setPos(x()-5,y());
-    if(pos().x() < 25) {
-        //scene()->removeItem(this);
+
+    if (game->ship->isAlive()) {
+        if(pos().x() < 25) {
+            scene()->removeItem(this);
+            delete this;
+        }
+    } else {
+        scene()->removeItem(this);
         delete this;
-        qDebug()<<"Enemy removed";
     }
 }
 

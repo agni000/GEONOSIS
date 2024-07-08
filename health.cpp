@@ -17,6 +17,10 @@ Health::Health(QObject *parent) : QObject(parent) {
     height = 11;
 }
 
+Health::~Health() {
+    delete healthSprite;
+}
+
 void Health::decrease()
 {
     m_health--;

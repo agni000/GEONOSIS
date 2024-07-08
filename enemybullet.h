@@ -16,6 +16,7 @@ protected:
     float height;
 public:
     EnemyBullet(QGraphicsItem *parent = nullptr);
+    ~EnemyBullet();
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 

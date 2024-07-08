@@ -23,11 +23,12 @@ protected:
     float height;
 public:
     Sprite(QObject *parent = nullptr);
-
+    ~Sprite();
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void CheckIdle(QKeyEvent *event);
     void Running(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    bool isAlive();
     // void keyReleaseEvent(QKeyEvent *event);
 signals:
 
